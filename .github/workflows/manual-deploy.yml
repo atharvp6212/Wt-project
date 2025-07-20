@@ -1,0 +1,22 @@
+name: Manual Deploy to AWS EC2
+
+on:
+  workflow_dispatch:  # This allows manual trigger from GitHub UI
+
+jobs:
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy over SSH to AWS EC2
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.AWS_HOST }}
+        username: ${{ secrets.AWS_USER }}
+        key: ${{ secrets.AWS_SSH_KEY }}
+        port: 22
+        script: |
+          cd /var/www/your-project-folder   # 🔁 Change this path
+          git pull origin main              # Or whatever branch you're using
+          # Optional: composer install, npm install, service restart etc.
